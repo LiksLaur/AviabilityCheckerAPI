@@ -20,6 +20,7 @@ class SRequestModel(BaseModel):
 @app.post("/check", response_model=SRequestModel)
 def checkAvailbility(links: StatusResponse):
     result = {}
+    links.listLinks = set(links.listLinks)
     for link in links.listLinks:
         try:
             r = requests.get(link)
@@ -41,3 +42,6 @@ def checkAvailbility(links: StatusResponse):
             result[link] = SSiteStatus(available=False, code=1, info=f"Err: {str(err)}")
     return SRequestModel(request=result)
     
+@app.get("/")
+def hi():
+    return"hi"
